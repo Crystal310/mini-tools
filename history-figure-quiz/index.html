@@ -1,0 +1,704 @@
+<title>你是哪位历史名人</title>
+<meta charset="utf-8">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@400;600;700&family=Noto+Sans+SC:wght@400;500;700&display=swap');
+
+:root{
+  --bg:#e9e3d6;
+  --surface:#f6f1e6;
+  --surface-2:#efe8d9;
+  --ink:#26221a;
+  --ink-soft:#6b6252;
+  --ink-faint:#9c9280;
+  --accent:#a83226;
+  --accent-soft:#c9776a;
+  --accent-wash:#a832261a;
+  --jade:#41604f;
+  --gold:#9c7a2c;
+  --border:#cdc2a6;
+  --shadow:0 18px 40px -22px rgba(38,34,26,0.45);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#161310;
+    --surface:#221d16;
+    --surface-2:#2a241b;
+    --ink:#ece4d3;
+    --ink-soft:#b3a68d;
+    --ink-faint:#7d735f;
+    --accent:#d9614f;
+    --accent-soft:#8f3a2c;
+    --accent-wash:#d9614f26;
+    --jade:#83a892;
+    --gold:#cda94f;
+    --border:#3c3427;
+    --shadow:0 18px 40px -20px rgba(0,0,0,0.6);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161310;
+  --surface:#221d16;
+  --surface-2:#2a241b;
+  --ink:#ece4d3;
+  --ink-soft:#b3a68d;
+  --ink-faint:#7d735f;
+  --accent:#d9614f;
+  --accent-soft:#8f3a2c;
+  --accent-wash:#d9614f26;
+  --jade:#83a892;
+  --gold:#cda94f;
+  --border:#3c3427;
+  --shadow:0 18px 40px -20px rgba(0,0,0,0.6);
+}
+
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Noto Sans SC","PingFang SC",system-ui,sans-serif;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  padding:40px 16px 56px;
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+}
+
+.stage{
+  width:100%;
+  max-width:560px;
+  position:relative;
+}
+
+.seal-corner{
+  position:absolute;
+  top:-14px; right:8px;
+  width:34px; height:34px;
+  border-radius:6px;
+  background:var(--accent);
+  opacity:0.9;
+  transform:rotate(4deg);
+  box-shadow:0 6px 16px -6px rgba(0,0,0,0.4);
+}
+.seal-corner::after{
+  content:"测";
+  position:absolute; inset:0;
+  display:flex; align-items:center; justify-content:center;
+  color:#f6ede1;
+  font-family:"Ma Shan Zheng",cursive;
+  font-size:20px;
+}
+
+.masthead{
+  text-align:center;
+  margin-bottom:22px;
+}
+.masthead h1{
+  font-family:"Ma Shan Zheng",cursive;
+  font-weight:400;
+  font-size:44px;
+  line-height:1.1;
+  margin:0 0 6px;
+  color:var(--ink);
+  text-wrap:balance;
+}
+.masthead p{
+  margin:0;
+  font-size:13px;
+  letter-spacing:0.14em;
+  color:var(--ink-soft);
+}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:4px;
+  box-shadow:var(--shadow);
+  position:relative;
+  padding:36px 30px 30px;
+}
+.card::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:1px solid var(--border);
+  border-radius:2px;
+  pointer-events:none;
+  opacity:0.6;
+}
+
+/* ---- intro ---- */
+.intro-body p{
+  font-family:"Noto Serif SC",serif;
+  font-size:15.5px;
+  line-height:1.85;
+  color:var(--ink-soft);
+  max-width:42ch;
+  margin:0 auto 22px;
+  text-align:center;
+}
+.figure-strip{
+  display:flex;
+  justify-content:center;
+  gap:8px;
+  flex-wrap:wrap;
+  margin:0 0 26px;
+}
+.figure-chip{
+  font-family:"Noto Serif SC",serif;
+  font-size:12.5px;
+  color:var(--ink-faint);
+  border:1px solid var(--border);
+  border-radius:999px;
+  padding:4px 11px;
+}
+
+.btn{
+  display:block;
+  width:100%;
+  border:none;
+  border-radius:3px;
+  padding:15px 18px;
+  font-family:"Noto Sans SC",sans-serif;
+  font-size:15px;
+  font-weight:700;
+  letter-spacing:0.04em;
+  cursor:pointer;
+  transition:transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+.btn:focus-visible{outline:2px solid var(--accent); outline-offset:2px;}
+.btn-primary{
+  background:var(--accent);
+  color:#f8efe4;
+  box-shadow:0 10px 24px -12px var(--accent-soft);
+}
+.btn-primary:hover{transform:translateY(-1px);}
+.btn-ghost{
+  background:transparent;
+  color:var(--ink-soft);
+  border:1px solid var(--border);
+  margin-top:12px;
+}
+.btn-ghost:hover{border-color:var(--accent-soft); color:var(--ink);}
+
+/* ---- progress ---- */
+.progress-row{
+  display:flex;
+  align-items:baseline;
+  justify-content:space-between;
+  margin-bottom:18px;
+}
+.progress-label{
+  font-size:12px;
+  letter-spacing:0.12em;
+  color:var(--ink-faint);
+  font-variant-numeric:tabular-nums;
+}
+.progress-track{
+  height:2px;
+  background:var(--border);
+  border-radius:2px;
+  margin-bottom:28px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--accent);
+  border-radius:2px;
+  transition:width 0.4s cubic-bezier(.4,0,.2,1);
+}
+
+/* ---- question ---- */
+.q-wrap{animation:fadeSlide 0.35s ease both;}
+@keyframes fadeSlide{
+  from{opacity:0; transform:translateY(8px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.q-text{
+  font-family:"Noto Serif SC",serif;
+  font-size:20px;
+  font-weight:600;
+  line-height:1.6;
+  margin:0 0 24px;
+  text-wrap:balance;
+}
+.options{display:flex; flex-direction:column; gap:10px;}
+.option{
+  text-align:left;
+  border:1px solid var(--border);
+  background:var(--surface-2);
+  border-radius:3px;
+  padding:14px 16px;
+  font-family:"Noto Serif SC",serif;
+  font-size:14.5px;
+  color:var(--ink);
+  cursor:pointer;
+  line-height:1.5;
+  transition:border-color 0.15s ease, background 0.15s ease, transform 0.1s ease;
+}
+.option:hover{border-color:var(--accent-soft); background:var(--accent-wash);}
+.option:active{transform:scale(0.99);}
+
+/* ---- result ---- */
+.result-wrap{animation:fadeSlide 0.45s ease both;}
+.result-eyebrow{
+  text-align:center;
+  font-size:12px;
+  letter-spacing:0.16em;
+  color:var(--ink-faint);
+  margin-bottom:6px;
+}
+.result-name{
+  text-align:center;
+  font-family:"Ma Shan Zheng",cursive;
+  font-size:56px;
+  line-height:1.1;
+  margin:0 0 4px;
+  color:var(--ink);
+}
+.result-title{
+  text-align:center;
+  font-size:13px;
+  color:var(--accent);
+  font-weight:700;
+  letter-spacing:0.08em;
+  margin-bottom:18px;
+}
+
+.match-ring{
+  width:112px; height:112px;
+  border-radius:50%;
+  margin:0 auto 18px;
+  display:flex; align-items:center; justify-content:center;
+  position:relative;
+  background:conic-gradient(var(--accent) calc(var(--pct) * 1%), var(--border) 0);
+}
+.match-ring::before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border-radius:50%;
+  background:var(--surface);
+}
+.match-ring span{
+  position:relative;
+  font-variant-numeric:tabular-nums;
+  font-size:26px;
+  font-weight:700;
+  font-family:"Noto Sans SC",sans-serif;
+}
+.match-ring small{
+  position:absolute;
+  bottom:26px;
+  font-size:10px;
+  letter-spacing:0.08em;
+  color:var(--ink-faint);
+  font-weight:500;
+}
+
+.quote{
+  font-family:"Noto Serif SC",serif;
+  font-style:normal;
+  text-align:center;
+  color:var(--ink-soft);
+  font-size:14px;
+  margin:0 0 16px;
+  padding:0 8px;
+}
+.quote::before{content:"「";}
+.quote::after{content:"」";}
+
+.desc{
+  font-family:"Noto Serif SC",serif;
+  font-size:15px;
+  line-height:1.85;
+  color:var(--ink);
+  text-align:center;
+  max-width:44ch;
+  margin:0 auto 26px;
+}
+
+.axes{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  margin-bottom:28px;
+}
+.axis-row{
+  display:grid;
+  grid-template-columns:64px 1fr;
+  align-items:center;
+  gap:10px;
+}
+.axis-name{
+  font-size:12px;
+  color:var(--ink-faint);
+  text-align:right;
+}
+.axis-track{
+  position:relative;
+  height:6px;
+  background:var(--surface-2);
+  border:1px solid var(--border);
+  border-radius:999px;
+}
+.axis-you, .axis-figure{
+  position:absolute;
+  top:50%;
+  width:9px; height:9px;
+  border-radius:50%;
+  transform:translate(-50%,-50%);
+}
+.axis-you{background:var(--jade); z-index:2;}
+.axis-figure{background:var(--accent); opacity:0.55;}
+
+.legend{
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin-bottom:26px;
+}
+.legend-item{
+  display:flex; align-items:center; gap:6px;
+  font-size:11.5px; color:var(--ink-faint);
+}
+.legend-dot{width:8px; height:8px; border-radius:50%;}
+
+.actions{display:flex; flex-direction:column; gap:10px;}
+
+.toast{
+  position:fixed;
+  bottom:28px; left:50%;
+  transform:translateX(-50%) translateY(12px);
+  background:var(--ink);
+  color:var(--bg);
+  font-size:13px;
+  padding:10px 18px;
+  border-radius:999px;
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.25s ease, transform 0.25s ease;
+  z-index:10;
+}
+.toast.show{opacity:1; transform:translateX(-50%) translateY(0);}
+
+.shared-note{
+  text-align:center;
+  font-size:12px;
+  color:var(--ink-faint);
+  margin-bottom:16px;
+}
+
+[hidden]{display:none !important;}
+</style>
+
+<div class="stage">
+  <div class="seal-corner"></div>
+  <div class="masthead">
+    <h1>你是哪位历史名人</h1>
+    <p>十二问 · 照见你的古人性格</p>
+  </div>
+
+  <div class="card">
+    <div class="card-inner">
+
+      <div id="view-intro">
+        <p class="shared-note" id="shared-note" hidden>这是朋友测出的结果 ↓</p>
+        <div class="intro-body">
+          <p>十二道情境题，六个性格维度，从曹操、诸葛亮、李白到武则天、花木兰——测出历史长河里，与你最像的那一个。</p>
+        </div>
+        <div class="figure-strip" id="figure-strip"></div>
+        <button class="btn btn-primary" id="btn-start">开始测试</button>
+      </div>
+
+      <div id="view-quiz" hidden>
+        <div class="progress-row">
+          <span class="progress-label" id="progress-label">问 1 / 12</span>
+          <span class="progress-label" id="progress-axis"></span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+        <div class="q-wrap" id="q-wrap"></div>
+      </div>
+
+      <div id="view-result" hidden>
+        <div class="result-wrap">
+          <p class="result-eyebrow">测试结果</p>
+          <h2 class="result-name" id="r-name"></h2>
+          <p class="result-title" id="r-title"></p>
+          <div class="match-ring" id="r-ring"><small>契合度</small><span id="r-pct"></span></div>
+          <p class="quote" id="r-quote"></p>
+          <p class="desc" id="r-desc"></p>
+          <div class="legend">
+            <div class="legend-item"><span class="legend-dot" style="background:var(--jade)"></span>你</div>
+            <div class="legend-item"><span class="legend-dot" style="background:var(--accent);opacity:0.55"></span><span id="r-name-legend"></span></div>
+          </div>
+          <div class="axes" id="r-axes"></div>
+          <div class="actions">
+            <button class="btn btn-primary" id="btn-share">复制专属链接，分享给朋友</button>
+            <button class="btn btn-ghost" id="btn-retry">重新测一次</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast">链接已复制</div>
+
+<script>
+const AXES = ["野心","严谨","理性","冒险","集体","乐观"];
+
+const FIGURES = [
+  {id:"caocao", name:"曹操", title:"乱世枭雄 · 权谋家", quote:"宁教我负天下人，休教天下人负我", desc:"你极具野心与决断力，习惯运筹全局、掌控局面，遇事果断不拖泥带水，是天生的领导者与谋略家。", vec:[5,4,4,4,2,3]},
+  {id:"zhugeliang", name:"诸葛亮", title:"鞠躬尽瘁 · 谋略家", quote:"鞠躬尽瘁，死而后已", desc:"你严谨周密、责任感极强，凡事三思而后行，把大局和团队放在心上，是最值得托付重任的人。", vec:[3,5,5,2,5,2]},
+  {id:"libai", name:"李白", title:"诗仙 · 浪漫主义者", quote:"天生我材必有用，千金散尽还复来", desc:"你崇尚自由、感情充沛，见不得被规矩束缚，渴望仗剑天涯，活得比谁都潇洒尽兴。", vec:[1,1,2,5,1,4]},
+  {id:"sushi", name:"苏轼", title:"东坡居士 · 生活家", quote:"人生如逆旅，我亦是行人", desc:"你豁达乐观、随遇而安，无论顺境逆境都能自得其乐，是把日子过成诗的天生生活家。", vec:[2,2,3,3,3,5]},
+  {id:"wuzetian", name:"武则天", title:"一代女帝 · 强者", quote:"政启开元，治宏贞观", desc:"你目标明确、雷厉风行，敢于打破常规、独当一面，是不折不扣不服输的强者。", vec:[5,5,4,4,2,2]},
+  {id:"yuefei", name:"岳飞", title:"精忠报国 · 义士", quote:"精忠报国", desc:"你重情重义、原则感强，认定的事绝不轻易妥协，是所有人心中最值得信赖的那种人。", vec:[3,5,3,4,5,2]},
+  {id:"fanli", name:"范蠡", title:"陶朱公 · 智者", quote:"飞鸟尽，良弓藏", desc:"你精明务实又懂得进退，既能拼命打天下，也能急流勇退享太平，是真正通透的聪明人。", vec:[4,3,4,3,3,4]},
+  {id:"wangyangming", name:"王阳明", title:"心学宗师 · 哲人", quote:"知行合一", desc:"你善于内省、思虑深远，凡事讲究知行合一，是沉稳内敛、自有一套心法的哲人型人格。", vec:[2,4,5,2,4,2]},
+  {id:"tangbohu", name:"唐伯虎", title:"江南才子 · 洒脱派", quote:"别人笑我太疯癫，我笑他人看不穿", desc:"你率性洒脱、才华外露，不喜拘束条框，向往诗酒趁年华、快意度此生的自在人生。", vec:[1,1,2,4,1,5]},
+  {id:"huamulan", name:"花木兰", title:"替父从军 · 行动派", quote:"谁说女子不如男", desc:"你勇敢坚韧、敢于担当，关键时刻永远是那个挺身而出的人，外柔内刚，靠谱到骨子里。", vec:[3,4,3,5,5,3]}
+];
+
+const QUESTIONS = [
+  {axis:0, text:"团队要选一位新项目的负责人，你会：", options:[
+    {t:"主动请缨，这个位置我最合适",v:5},
+    {t:"如果暂时没人选，我可以试试看",v:4},
+    {t:"让更有经验的人来吧，我先观望",v:2},
+    {t:"我更喜欢当执行者，不想操心全局",v:1}]},
+  {axis:0, text:"面前出现一个能力范围之外的机会，你会：", options:[
+    {t:"拼尽全力也要争取拿下",v:5},
+    {t:"评估一下，再勇敢地试一试",v:4},
+    {t:"犹豫再三，大概率会放弃",v:2},
+    {t:"果断放弃，不想勉强自己",v:1}]},
+  {axis:1, text:"做计划这件事，你通常是：", options:[
+    {t:"精确到每一小时，绝不轻易偏离",v:5},
+    {t:"有大致框架，按需灵活微调",v:4},
+    {t:"有个大方向就行，随时能变",v:2},
+    {t:"计划？那是用来打破的",v:1}]},
+  {axis:1, text:"突发状况打乱了原本的安排，你会：", options:[
+    {t:"第一时间重新制定详细方案",v:5},
+    {t:"冷静调整，尽量拉回原计划",v:4},
+    {t:"顺势而为，走一步看一步",v:2},
+    {t:"干脆放飞自我，随缘就好",v:1}]},
+  {axis:2, text:"做一个重大决定时，你更相信：", options:[
+    {t:"详尽的数据和逻辑推演",v:5},
+    {t:"理性分析，外加一点直觉",v:4},
+    {t:"更多听从当下内心的感受",v:2},
+    {t:"凭一时的心动和热情",v:1}]},
+  {axis:2, text:"朋友向你哭诉烦恼，你的第一反应是：", options:[
+    {t:"帮TA理清问题到底出在哪",v:5},
+    {t:"分析利弊，给出具体建议",v:4},
+    {t:"先共情，陪TA一起难过一会",v:2},
+    {t:"直接被带入情绪，比TA还激动",v:1}]},
+  {axis:3, text:"关于旅行方式，你更喜欢：", options:[
+    {t:"一切照攻略走，安全第一",v:1},
+    {t:"大方向定好，细节随缘发挥",v:2},
+    {t:"说走就走，边走边规划",v:4},
+    {t:"完全未知的路线才够刺激",v:5}]},
+  {axis:3, text:"面对一个从没做过的挑战，你：", options:[
+    {t:"能不做就尽量不做",v:1},
+    {t:"想清楚风险再谨慎决定",v:2},
+    {t:"觉得挺刺激，想试试看",v:4},
+    {t:"兴奋到立刻就想冲上去",v:5}]},
+  {axis:4, text:"团队合作中，你更在意：", options:[
+    {t:"个人的发挥空间和自由度",v:1},
+    {t:"效率优先，谁能力强谁上",v:2},
+    {t:"大家齐心协力的氛围",v:4},
+    {t:"集体的利益，个人得失其次",v:5}]},
+  {axis:4, text:"如果个人利益和集体利益冲突，你会：", options:[
+    {t:"优先保全自己的利益",v:1},
+    {t:"权衡一下，再做决定",v:2},
+    {t:"大多数情况会为集体让步",v:4},
+    {t:"毫不犹豫地牺牲小我",v:5}]},
+  {axis:5, text:"遇到倒霉事的时候，你通常：", options:[
+    {t:"沉重压抑，久久走不出来",v:1},
+    {t:"认真反思，情绪低落一阵子",v:2},
+    {t:"很快调整心态，苦中作乐",v:4},
+    {t:"一笑而过，顺便自嘲两句",v:5}]},
+  {axis:5, text:"在朋友眼中，你是这样的人：", options:[
+    {t:"深沉严肃，不苟言笑",v:1},
+    {t:"沉稳可靠，偶尔冷幽默",v:2},
+    {t:"开朗爱笑，气氛担当",v:4},
+    {t:"段子手本手，谁都能被你逗乐",v:5}]}
+];
+
+const VALUE_ORDER = [1,2,4,5];
+
+function computeResult(answerIdx){
+  const sums = [0,0,0,0,0,0];
+  const counts = [0,0,0,0,0,0];
+  answerIdx.forEach((idx, qi) => {
+    const q = QUESTIONS[qi];
+    sums[q.axis] += q.options[idx].v;
+    counts[q.axis]++;
+  });
+  const userVec = sums.map((s,i) => s / counts[i]);
+
+  let best = null, bestDist = Infinity;
+  FIGURES.forEach(f => {
+    let d = 0;
+    for(let i=0;i<6;i++){ d += (userVec[i]-f.vec[i])**2; }
+    d = Math.sqrt(d);
+    if(d < bestDist){ bestDist = d; best = f; }
+  });
+  const maxDist = Math.sqrt(6*16);
+  let pct = Math.round((1 - bestDist/maxDist) * 100);
+  pct = Math.max(58, Math.min(99, pct));
+  return {figure:best, userVec, pct};
+}
+
+function encodeAnswers(answerIdx){
+  return answerIdx.join("");
+}
+function decodeAnswers(str){
+  if(!/^[0-3]{12}$/.test(str)) return null;
+  return str.split("").map(Number);
+}
+
+const viewIntro = document.getElementById("view-intro");
+const viewQuiz = document.getElementById("view-quiz");
+const viewResult = document.getElementById("view-result");
+const figureStrip = document.getElementById("figure-strip");
+const sharedNote = document.getElementById("shared-note");
+
+FIGURES.forEach(f => {
+  const chip = document.createElement("span");
+  chip.className = "figure-chip";
+  chip.textContent = f.name;
+  figureStrip.appendChild(chip);
+});
+
+let current = 0;
+let answers = [];
+
+function showView(v){
+  viewIntro.hidden = v !== "intro";
+  viewQuiz.hidden = v !== "quiz";
+  viewResult.hidden = v !== "result";
+}
+
+function renderQuestion(){
+  const q = QUESTIONS[current];
+  document.getElementById("progress-label").textContent = `问 ${current+1} / ${QUESTIONS.length}`;
+  document.getElementById("progress-axis").textContent = AXES[q.axis];
+  document.getElementById("progress-fill").style.width = `${(current/QUESTIONS.length)*100}%`;
+
+  const wrap = document.getElementById("q-wrap");
+  wrap.innerHTML = "";
+  wrap.classList.remove("q-wrap");
+  void wrap.offsetWidth;
+  wrap.classList.add("q-wrap");
+
+  const qText = document.createElement("p");
+  qText.className = "q-text";
+  qText.textContent = q.text;
+  wrap.appendChild(qText);
+
+  const opts = document.createElement("div");
+  opts.className = "options";
+  q.options.forEach((opt, i) => {
+    const b = document.createElement("button");
+    b.className = "option";
+    b.textContent = opt.t;
+    b.addEventListener("click", () => selectAnswer(i));
+    opts.appendChild(b);
+  });
+  wrap.appendChild(opts);
+}
+
+function selectAnswer(i){
+  answers[current] = i;
+  current++;
+  if(current < QUESTIONS.length){
+    renderQuestion();
+  } else {
+    document.getElementById("progress-fill").style.width = "100%";
+    setTimeout(() => renderResult(answers), 180);
+  }
+}
+
+function renderResult(answerIdx){
+  const {figure, userVec, pct} = computeResult(answerIdx);
+  const code = encodeAnswers(answerIdx);
+
+  document.getElementById("r-name").textContent = figure.name;
+  document.getElementById("r-name-legend").textContent = figure.name;
+  document.getElementById("r-title").textContent = figure.title;
+  document.getElementById("r-quote").textContent = figure.quote;
+  document.getElementById("r-desc").textContent = figure.desc;
+  document.getElementById("r-pct").textContent = `${pct}%`;
+  document.getElementById("r-ring").style.setProperty("--pct", pct);
+
+  const axesWrap = document.getElementById("r-axes");
+  axesWrap.innerHTML = "";
+  AXES.forEach((name, i) => {
+    const row = document.createElement("div");
+    row.className = "axis-row";
+    const label = document.createElement("span");
+    label.className = "axis-name";
+    label.textContent = name;
+    const track = document.createElement("div");
+    track.className = "axis-track";
+    const you = document.createElement("div");
+    you.className = "axis-you";
+    you.style.left = `${(userVec[i]/5)*100}%`;
+    const fig = document.createElement("div");
+    fig.className = "axis-figure";
+    fig.style.left = `${(figure.vec[i]/5)*100}%`;
+    track.appendChild(fig);
+    track.appendChild(you);
+    row.appendChild(label);
+    row.appendChild(track);
+    axesWrap.appendChild(row);
+  });
+
+  const url = new URL(location.href);
+  url.searchParams.set("a", code);
+  document.getElementById("btn-share").onclick = () => {
+    navigator.clipboard.writeText(url.toString()).then(() => showToast("链接已复制，快分享给朋友吧"))
+      .catch(() => showToast("复制失败，请手动复制地址栏链接"));
+  };
+
+  showView("result");
+}
+
+function showToast(msg){
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => t.classList.remove("show"), 2200);
+}
+
+document.getElementById("btn-start").addEventListener("click", () => {
+  current = 0; answers = [];
+  renderQuestion();
+  showView("quiz");
+});
+document.getElementById("btn-retry").addEventListener("click", () => {
+  const url = new URL(location.href);
+  url.searchParams.delete("a");
+  history.replaceState(null, "", url.toString());
+  sharedNote.hidden = true;
+  current = 0; answers = [];
+  renderQuestion();
+  showView("quiz");
+});
+
+(function init(){
+  const params = new URL(location.href).searchParams;
+  const shared = params.get("a");
+  const decoded = shared ? decodeAnswers(shared) : null;
+  if(decoded){
+    sharedNote.hidden = false;
+    renderResult(decoded);
+  } else {
+    showView("intro");
+  }
+})();
+</script>
