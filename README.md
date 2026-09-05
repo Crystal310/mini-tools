@@ -4,7 +4,7 @@
 
 ## 已上线
 
-- [history-figure-quiz](./history-figure-quiz/) — 你是哪位历史名人：12题性格测试，[在线体验](https://crystal310.github.io/mini-tools/history-figure-quiz/)
+- [history-figure-quiz](./history-figure-quiz/) — 历史人物测试新版：24 题情境性格测试，含 1,000 道随机题库、113 位人物档案和完整结果图导出，[在线体验](https://crystal310.github.io/mini-tools/history-figure-quiz/)
 
 ## 新增一个测试
 
